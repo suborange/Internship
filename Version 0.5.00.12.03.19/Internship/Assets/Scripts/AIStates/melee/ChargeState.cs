@@ -11,8 +11,10 @@
  * 1.0.00 = GOLD?
  * Version: 
  * 0.0.00.112219; Created script
+ * -.01.112919; add functionality and made sure it does work with the boss phase
+ * -.01.120119; rechecked logic, added in-depth comments. 
+ * 1.0.01.120319; GOLD? 
  * 
- * 1.1.00.120319; GOLD?
  * 
  * */
 
@@ -24,13 +26,14 @@ using UnityEngine;
 
 //*******************************************************************************************************************************************************************************************************************************
 /*  HOW TO USE THIS SCRIPT:
- * 
+ * This is the Charge State. a more advanced state where based on conditions, shoud charge and attack the player. it simply charges towards the players location in range 
+ * Change or Update to however you want the enemy to Charge the player. 
  * 
  * 
  * 
  */
 
-// WANDER STATE- inherits from BaseAIState for the enemy_object and Tick() function
+// CHARGE STATE- inherits from BaseAIState for the enemy_object and Tick() function
 public class ChargeState : BaseAIState
 {
     protected EnemyAI _obj;
@@ -43,8 +46,9 @@ public class ChargeState : BaseAIState
     protected float charge_speed;
     protected float slow_speed; //maybe change this number for multiplying with the GameManager Speed
 
-    
 
+    // Charge State constructor, is called upon when this object is instantiated. also calls base(baseAIState) constructor
+    // so grab the enemy this script is now attatched too.
     public ChargeState(EnemyAI enemy_obj) : base(enemy_obj.gameObject)
     {
         _obj = enemy_obj;
@@ -62,6 +66,7 @@ public class ChargeState : BaseAIState
         slow_speed = 0.72f;
     }
 
+    // to charge the enemy, with time yields
     private IEnumerator Charge()
     {
         Debug.Log("STARTED CORROUTINE!!!");
@@ -70,7 +75,8 @@ public class ChargeState : BaseAIState
         yield return new WaitForSeconds(2f);
         //Debug.Log("Charging...attacking...");
         attack_coords = _obj.transform.position - transform.position;
-        // change chargespeed to based of distance from player. 
+
+        // change chargespeed to based of distance from player. charge faster closer to player, slower the farther.
         charge_speed = (Vector3.Distance(transform.position, _obj.transform.position) / 5.2f); // get distance then / 5.2
         charge_speed = charge_speed < 1.65f ? 1.65f : charge_speed; // if charge_speed < Val, true: charge_speed = Val, fasle: charge_speed = charge_speed
         charge_speed = charge_speed > 2.11f ? 2.11f : charge_speed; // if charge_speed > Val, true: charge_speed = Val, fasle: charge_speed = charge_speed
@@ -83,6 +89,7 @@ public class ChargeState : BaseAIState
         
     }
 
+    // pause inbetween charging and another action.
     private IEnumerator WaitCharge()
     {
         slow_speed = 0;
@@ -95,7 +102,9 @@ public class ChargeState : BaseAIState
     // Tick() gets called every update frame
     public override Type Tick()
     {
-
+        // need to check if for aggro? should just need target when in aggro state so shouldnt need it. 
+        if (_obj.Target == null)
+            return typeof(WanderState);
         //if (charge_att == true)
         //{
 
@@ -126,7 +135,12 @@ public class ChargeState : BaseAIState
         // }
 
         //ENTER CHANGE STATE CONDITIONS HERE
-
+        // when charging enemy gets too far from the player, enemy goes back to wander state.
+        if (Vector3.Distance(_obj.transform.position, GameManager.player_obj.transform.position) > (GameManager.MeleeAggroRadius + 6f))
+        {
+            GameManager.Instance.stopCoroutines();
+            return typeof(WanderState);
+        }
 
         return null;
     }

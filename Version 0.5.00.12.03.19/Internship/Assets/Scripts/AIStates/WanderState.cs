@@ -8,7 +8,7 @@
  * 1.0.00 = GOLD?
  * Version: 
  * 0.0.00.112219; Created script 
- *       ;Fleshed out this inherited script with whats needed.
+ * -.01.112919;Fleshed out this inherited script with whats needed. added in-depth comments
  * 
  * 1.1.00.120319; GOLD?
  * */
@@ -20,9 +20,8 @@ using UnityEngine;
 
 //*******************************************************************************************************************************************************************************************************************************
 /*  HOW TO USE THIS SCRIPT:
-* 
-* 
-* 
+* This is the Wander State. The most advanced state, were the enemy will wander and look around, and can detect the player. 
+* Change or Update to however you want the enemy to wander around and detect the player. 
 * 
 */
 
@@ -51,15 +50,14 @@ public class WanderState : BaseAIState
         if (chaseTarget != null)
         {
             _obj.SetTarget(chaseTarget);
-            if (_obj._Melee == true) return typeof(ChaseState);
+            return typeof(ChaseState);
             // else if (_obj._Range == true) return typeof(ShootState);
         }
 
         if (_destination.HasValue == false ||
             Vector3.Distance(transform.position, _destination.Value) <= stopDistance)
         {
-            //FindRandomDestination();
-
+            FindRandomDestination();
         }
 
         transform.rotation = Quaternion.Slerp(transform.rotation, _desiredRotation, Time.deltaTime * turnSpeed);

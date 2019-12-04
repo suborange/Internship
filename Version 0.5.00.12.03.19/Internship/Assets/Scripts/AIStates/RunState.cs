@@ -23,7 +23,8 @@ using UnityEngine;
 
 //*******************************************************************************************************************************************************************************************************************************
 /*  HOW TO USE THIS SCRIPT:
- * This is the Run State. Another one of the most simple states, it simply runs away from the players location. Change or Update to however you want the enemy to flee from the player. 
+ * This is the Run State. Another one of the most simple states, it simply runs away from the players location.
+ *  Change or Update to however you want the enemy to flee from the player. 
  * 
  */
 

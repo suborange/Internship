@@ -12,7 +12,7 @@
  * Version: 
  * 0.0.00.112219; Created script
  * * -.01.113019;  Fleshed out this inherited script with whats needed. Add dodge functionalities 
- * -.120219; added way for both melee and ranged. added comments * 
+ * -.120219; added way for both melee and ranged. added in-depth comments 
  * 1.1.00.120319; GOLD?
  * 
  * */
@@ -24,7 +24,8 @@ using UnityEngine;
 
 //*******************************************************************************************************************************************************************************************************************************
 /*  HOW TO USE THIS SCRIPT:
- * This is the Dodge State. A state that is a little more fun, it simply dodges right or left away from the players. Change or Update to however you want the enemy to dodge from the player.
+ * This is the Dodge State. A state that is a little more fun, it simply dodges right or left away from the players. 
+ * Change or Update to however you want the enemy to dodge from the player.
  *  Dodges max 4 times in a row, then changes to chase target
  *  
  */
@@ -39,34 +40,40 @@ public class DodgeState : BaseAIState
     private bool _LRdir;
     // lock/unlock the corroutine
     private bool _dodge;
+    private bool _wait;
     private float _range;
-    private int count = 0;
+    private int count;
 
     public void Awake()
     {
         // find good dash speed
         _speed = GameManager.Speed * 5;
+        count = 0;
         _LRdir = false;
         _dodge = false;
+        _wait = false;
     }
     // Dodge State constructor, is called upon when this object is instantiated. also calls base(baseAIState) constructor
     // so grab the enemy this script is now attatched too.
     public DodgeState(EnemyAI enemy_obj) : base (enemy_obj.gameObject)
     {
-        _obj = enemy_obj;
+        _obj = enemy_obj;        
     }
 
     // Coroutine decides direction and then dashes in Tick(), until _dodge=false
     private IEnumerator Dodge()
     {
+        Debug.Log("DODGE");
         // swap between left and right
         if (_LRdir == false) _LRdir = true;
         else if (_LRdir == true) _LRdir = false;
         _target = this.transform;
-        count++;
+        this.count++;
         yield return new WaitForSeconds(0.5f); // dodge for half a second
         _dodge = false;
+
         yield return new WaitForSeconds(4f); // shouldnt dodge for x seconds
+        _wait = false;
     }
 
     // Tick() gets called every update frame
@@ -82,30 +89,36 @@ public class DodgeState : BaseAIState
             _range = GameManager.RangeAggroRadius;
         }
         // dash 4 times then change to chase state
-        if ( count >= 4)
+        if ( this.count >= 4)
         {
+            GameManager.Instance.stopCoroutines();
             return typeof(ChaseState);
         }
         // if enemy is somehow in range to attack, and not when dodgin, attack the player.  
         if (Vector3.Distance(_obj.transform.position, GameManager.player_obj.transform.position) <= _range && 
             _dodge == false)
         {
+            GameManager.Instance.stopCoroutines();
             return typeof(AttackState);
         }
         // Dodged until far enough away from the player and  max range, enemy starts to wander around again. 
-        if (Vector3.Distance(_obj.transform.position, GameManager.player_obj.transform.position) > (_range + 3f))
+        if (Vector3.Distance(_obj.transform.position, GameManager.player_obj.transform.position) > (_range + 6f))
         {
             return typeof(WanderState);
         }
+
         // start dodge- chooses L/R- then dashs
-        if (_dodge == false) _dodge = true; GameManager.Instance.ForCoroutine(Dodge());
-        if (_LRdir == false) transform.position += _speed * _target.right * Time.deltaTime; //transform.position += speed * Vector3.right * Time.deltaTime;
+        // then dash right
+        if (_dodge == false && _wait == false)
+        {
+            _dodge = true;
+            _wait = true;
+            GameManager.Instance.ForCoroutine(Dodge());
+        }
+        if (_LRdir == false && _dodge == true) transform.position += _speed * _target.right * Time.deltaTime; //transform.position += speed * Vector3.right * Time.deltaTime;
         //then dash left
-        if (_LRdir == true) transform.position -= _speed * _target.right * Time.deltaTime; //transform.position += speed * Vector3.left * Time.deltaTime;
-        Debug.Log("DODGE");
-
-
-      
+        if (_LRdir == true&& _dodge == true) transform.position -= _speed * _target.right * Time.deltaTime; //transform.position += speed * Vector3.left * Time.deltaTime;
+            
 
         return null;
     }

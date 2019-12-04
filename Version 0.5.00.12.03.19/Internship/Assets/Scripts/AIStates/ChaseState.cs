@@ -9,7 +9,7 @@
  * 1.0.00 = GOLD?
  * Version: 
  * 0.1.00.112219; Created script, copied from old chase script again and updated. 
- * -.112919; add functionality with boss, and add comments. 
+ * -.01.112919; add functionality with boss, and added in-depth  comments. 
  * 1.1.00.120319; GOLD?
  * 
  * 
@@ -23,7 +23,8 @@ using UnityEngine;
 
 //*******************************************************************************************************************************************************************************************************************************
 /*  HOW TO USE THIS SCRIPT:
- * This is the Chase State. One of the most simple states, it simply chases the players location. Change or Update to however you want the enemy to chase the player. 
+ * This is the Chase State. One of the most simple states, it simply chases the players location. 
+ * Change or Update to however you want the enemy to chase the player. 
  * 
  */
 

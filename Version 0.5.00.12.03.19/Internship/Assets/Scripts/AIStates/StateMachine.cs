@@ -48,6 +48,7 @@ public class StateMachine : MonoBehaviour
         if (Current_state == null)
         {
             Current_state = _available_states.Values.First();
+            //Debug.Log(_available_states.Values.First());
         }
 
         // Calls the next Tick() of the state it is in. 

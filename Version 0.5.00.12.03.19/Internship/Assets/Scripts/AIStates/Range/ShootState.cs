@@ -11,8 +11,10 @@
  * 1.0.00 = GOLD?
  * Version: 
  * 0.0.00.112219; Created script
+ * -.01.112919; add functionality and made sure it works with the boss logic 
+ * -.01.120119; rechecked and changed some logic, added in-depth comments. 
+ * 1.0.01.120319; GOLD? 
  * 
- * 1.1.00.120319; GOLD?
  * 
  * */
 
@@ -30,12 +32,15 @@ using UnityEngine;
  * 
  */
 
-// WANDER STATE- inherits from BaseAIState for the enemy_object and Tick() function
+// Range SHOOT STATE- inherits from BaseAIState for the enemy_object and Tick() function
 public class ShootState : BaseAIState
 {
     private float _attackReadyTimer = 2f;
     private EnemyAI _obj;
+
     // Make player flash red from "Hit"
+    // Shoot State constructor, is called upon when this object is instantiated. also calls base(baseAIState) constructor
+    // so grab the enemy this script is now attatched too.
     public ShootState( EnemyAI enemy_obj) : base(enemy_obj.gameObject)
     {
         _obj = enemy_obj;
@@ -43,27 +48,24 @@ public class ShootState : BaseAIState
     // Tick() gets called every update frame
     public override Type Tick()
     {
+        // need to check if for aggro? should just attack when in aggro state so shouldnt need it.
         if (_obj.Target == null)
             return typeof(WanderState);
-
-
-        if (Vector3.Distance(_obj.transform.position, GameManager.player_obj.transform.position) <= GameManager.RangeAggroRadius)
-        {
-            //CHANGE THE ATTACK CODE HERE
-            _attackReadyTimer -= Time.deltaTime;
-            if (_attackReadyTimer <= 0f)
-            {
-                Debug.Log("Shoot!");
-                _obj.FireTheLaser();
-            }
-        }
+        
+        // when enemy is father away than player, go back to wandering around. Then will decide from there if the player is in any range or not.
         else if (Vector3.Distance(_obj.transform.position, GameManager.player_obj.transform.position) > GameManager.RangeAggroRadius)
         {
-            return typeof(ChaseState);
+            return typeof(WanderState);
         }
-        
 
-
+        // timer for shooting every few frames.
+        _attackReadyTimer -= Time.deltaTime;
+        if (_attackReadyTimer <= 0f)
+        {
+            //CHANGE THE SHOOT CODE HERE
+            Debug.Log("Shoot!");
+            _obj.FireTheLaser();
+        }
 
         return null;
     }

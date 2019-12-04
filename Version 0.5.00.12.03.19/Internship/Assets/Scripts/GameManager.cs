@@ -32,13 +32,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float speed= 3.5f;
     public static float Speed => Instance.speed;
 
-    [SerializeField] private float rangeaggroRadius = 10f;
+    [SerializeField] private float rangeaggroRadius = 25f;
     public static float RangeAggroRadius => Instance.rangeaggroRadius;
 
-    [SerializeField] private float meleeaggroRadius = 5f;
+    [SerializeField] private float meleeaggroRadius =10f;
     public static float MeleeAggroRadius => Instance.meleeaggroRadius;
 
-    [SerializeField] private float meleeattackRange = 2f;
+    [SerializeField] private float meleeattackRange = 1f;
     public static float MeleeAttackRange => Instance.meleeattackRange;
 
     [SerializeField] private float leaveAttackRange = 4f;
@@ -46,6 +46,8 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private GameObject playerObject;
     public static GameObject player_obj => Instance.playerObject;
+
+    
 
     public static GameManager Instance { get; private set; }
 
@@ -55,12 +57,24 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         else
             Instance = this;
+
+        // if you forget to set the object to the player, should hopefully find the player object then.
+        if(playerObject == null)
+        {
+            playerObject = GameObject.FindWithTag("Player");
+        }
     }
 
         //think about returning something
     public void ForCoroutine(IEnumerator state)
     {
         StartCoroutine(state);        
+    }
+
+    //if coroutines stop, might need to reset some values. 
+    public void stopCoroutines()
+    {
+        StopAllCoroutines();
     }
 
 

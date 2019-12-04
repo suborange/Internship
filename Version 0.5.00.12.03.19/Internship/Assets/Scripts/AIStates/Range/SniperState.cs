@@ -1,8 +1,34 @@
-﻿using System;
+﻿/* Ethan Bonavida
+ * Enemy Sniper State-AI
+ * Enemy chases the player around. Simple as that
+ * 
+ * 
+ * -.DDMMYY
+ * 0.0.01 = bug fix, updates, trying small changes
+ * 0.1.-  = major changes, rewriting, changed logic  
+ * 1.0.00 = GOLD?
+ * Version: 
+ * 0.1.00.112219; Created script, copied from old chase script again and updated. 
+ * -.112919; add functionality with boss, and add in-depth  comments. 
+ * 1.1.00.120319; GOLD?
+ * 
+ * 
+ * */
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+//*******************************************************************************************************************************************************************************************************************************
+/*  HOW TO USE THIS SCRIPT:
+ * This is the Sniper State. a more advanced state, were the enemy is far away, and has detected the player. will shoot the player from longer ranges
+ * Change or Update to however you want the enemy to Snipe the player. 
+ * 
+ */
+
+// SNIPER STATE- inherits from BaseAIState for the enemy_object and Tick() function
 public class SniperState : BaseAIState
 {
     private EnemyAI _obj;
@@ -22,6 +48,8 @@ public class SniperState : BaseAIState
         rays_ = new Vector3(0, 0, 1);
     }
 
+    // Sniper State constructor, is called upon when this object is instantiated. also calls base(baseAIState) constructor
+    // so grab the enemy this script is now attatched too.
     public SniperState(EnemyAI obj) : base(obj.gameObject)
     {
         _obj = obj;

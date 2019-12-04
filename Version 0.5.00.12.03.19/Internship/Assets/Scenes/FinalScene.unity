@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -218,7 +218,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 497150740}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -7.57}
+  m_LocalPosition: {x: 0, y: 0, z: 1.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1574216562}
@@ -470,6 +470,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2491972545883580619, guid: 6ac087134147f51438d86c6b9ade5f3e,
+        type: 3}
+      propertyPath: _wander
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6ac087134147f51438d86c6b9ade5f3e, type: 3}
 --- !u!1 &1962814590
@@ -592,10 +597,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74236b0e3e0e3714d8e7ce8120f8aadf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
-  rangeaggroRadius: 10
-  meleeaggroRadius: 5
-  meleeattackRange: 2
+  speed: 3.5
+  rangeaggroRadius: 25
+  meleeaggroRadius: 10
+  meleeattackRange: 4
   leaveAttackRange: 4
   playerObject: {fileID: 1122202579}
 --- !u!4 &2026232902
