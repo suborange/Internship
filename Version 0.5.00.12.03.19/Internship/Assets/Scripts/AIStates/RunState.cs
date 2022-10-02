@@ -80,7 +80,7 @@ public class RunState : BaseAIState
             return typeof(WanderState);
         }
 
-        // SECEONDAY- another way to look at a run enemy. 
+        // SECONDARY- another way to look at a run enemy. 
         //if (Vector3.Distance(transform.position, _obj.transform.position) > stop_dist)
         //{
         //    transform.position = Vector3.MoveTowards(transform.position, _obj.transform.position, speed * Time.deltaTime);
